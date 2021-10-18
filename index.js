@@ -37,16 +37,20 @@ app.get('/people', async (req, res) => {
 
 	if (req.query.sortBy == 'mass') {
 		people.sort(function (a, b) {
-			if (!isFinite(a.mass) && !isFinite(b.mass)) {
+			//Ensures that masses with a comma are properly sorted
+			let massA = parseInt(a.mass.replace(/,/g, ''), 10)
+			let massB = parseInt(b.mass.replace(/,/g, ''), 10)
+
+			if (!isFinite(massA) && !isFinite(massB)) {
 				return 0
 			}
-			if (!isFinite(a.mass)) {
+			if (!isFinite(massA)) {
 				return 1
 			}
-			if (!isFinite(b.mass)) {
+			if (!isFinite(massB)) {
 				return -1
 			}
-			return a.mass - b.mass
+			return massA - massB
 		})
 	}
 
